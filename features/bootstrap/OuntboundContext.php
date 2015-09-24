@@ -11,6 +11,7 @@ use SelrahcD\Mailer\Correspondent;
 use SelrahcD\Mailer\CorrespondentCollection;
 use SelrahcD\Mailer\Email;
 use SelrahcD\Mailer\MailgunGateway;
+use SelrahcD\Mailer\Subject;
 
 /**
  * Defines application features from the specific context.
@@ -55,7 +56,7 @@ class OuntboundContext implements Context, SnippetAcceptingContext
 
         $to = CorrespondentCollection::createFromString($this->emailInfo['to']);
 
-        return new Email($from, $to, $this->emailInfo['subject'], $this->emailInfo['content']);
+        return new Email($from, $to, new Subject($this->emailInfo['subject']), $this->emailInfo['content']);
     }
 
 
