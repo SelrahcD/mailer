@@ -7,6 +7,8 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Mockery\Mock;
+use SelrahcD\Mailer\Correspondent;
+use SelrahcD\Mailer\CorrespondentCollection;
 use SelrahcD\Mailer\Email;
 use SelrahcD\Mailer\MailgunGateway;
 
@@ -48,7 +50,10 @@ class OuntboundContext implements Context, SnippetAcceptingContext
     public function castEmailFieldsTable(TableNode $emailTable)
     {
         $this->emailInfo = $emailTable->getHash()[0];
-        return new Email($this->emailInfo['from'], $this->emailInfo['to'], $this->emailInfo['subject'], $this->emailInfo['content']);
+
+        $to = CorrespondentCollection::createFromString($this->emailInfo['to']);
+
+        return new Email(new Correspondent($this->emailInfo['from']), $to, $this->emailInfo['subject'], $this->emailInfo['content']);
     }
 
 

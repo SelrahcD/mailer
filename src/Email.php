@@ -2,14 +2,17 @@
 
 namespace SelrahcD\Mailer;
 
+use Assert\Assertion;
+
 class Email
 {
     private $from;
+
     private $to;
     private $subject;
     private $content;
 
-    public function __construct($from, $to, $subject, $content)
+    public function __construct(Correspondent $from, $to, $subject, $content)
     {
         $this->from = $from;
         $this->to = $to;

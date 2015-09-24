@@ -21,6 +21,7 @@
     "require": {
         "phpunit/phpunit": "~4.8",
         "mailgun/mailgun-php": "~1.8",
-        "mockery/mockery": "0.9.*"
+        "mockery/mockery": "0.9.*",
+        "beberlei/assert": "~2.4"
     }
 }
