@@ -15,7 +15,7 @@ class CorrespondentCollection
     {
         $correspondents = array_map(function($email) {
             $email = trim($email);
-            return new Correspondent($email);
+            return Correspondent::createFromString($email);
         }, explode(',', $string));
 
         return new self($correspondents);

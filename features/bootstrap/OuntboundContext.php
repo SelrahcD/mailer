@@ -51,9 +51,11 @@ class OuntboundContext implements Context, SnippetAcceptingContext
     {
         $this->emailInfo = $emailTable->getHash()[0];
 
+        $from = Correspondent::createFromString($this->emailInfo['from']);
+
         $to = CorrespondentCollection::createFromString($this->emailInfo['to']);
 
-        return new Email(new Correspondent($this->emailInfo['from']), $to, $this->emailInfo['subject'], $this->emailInfo['content']);
+        return new Email($from, $to, $this->emailInfo['subject'], $this->emailInfo['content']);
     }
 
 

@@ -16,7 +16,15 @@ class CorrespondentCollectionSpec extends ObjectBehavior
 
     function it_should_be_able_to_build_a_collection_from_a_string()
     {
-        $this::createFromString('bla@test.fr, poney@test.fr')->shouldBeAnInstanceOf('SelrahcD\Mailer\CorrespondentCollection');
+        $this->beConstructedThrough('createFromString',
+            array('bla@test.fr, poney@test.fr')
+        );
+
+
+        $this->shouldBeLike(new CorrespondentCollection(array(
+            new Correspondent('bla@test.fr'),
+            new Correspondent('poney@test.fr')
+        )));
     }
     
     function it_should_return_a_string_representation(Correspondent $c1, Correspondent $c2)
