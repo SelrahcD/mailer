@@ -1,7 +1,6 @@
 Feature:
   As an external system
-  I'm able to send an email trough mailgun
-
+  I'm able to send an email through mailgun
 
   Scenario: Sending a basic email
     When I want to send an email with the following information using mailgun gateway:
