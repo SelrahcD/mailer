@@ -12,5 +12,15 @@
     ],
     "config": {
       "bin-dir": "bin/"
+    },
+  "autoload": {
+    "psr-4": {
+      "SelrahcD\\Mailer\\": "src/"
+    }
+  },
+    "require": {
+        "phpunit/phpunit": "~4.8",
+        "mailgun/mailgun-php": "~1.8",
+        "mockery/mockery": "0.9.*"
     }
 }

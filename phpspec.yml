@@ -1,0 +1,4 @@
+suites:
+    acme_suite:
+        namespace: SelrahcD\Mailer
+        psr4_prefix: SelrahcD\Mailer

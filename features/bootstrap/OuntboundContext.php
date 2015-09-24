@@ -1,16 +1,26 @@
 <?php
 
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Mockery\Mock;
+use SelrahcD\Mailer\Email;
+use SelrahcD\Mailer\MailgunGateway;
 
 /**
  * Defines application features from the specific context.
  */
 class OuntboundContext implements Context, SnippetAcceptingContext
 {
+    private $mailgunGateway;
+
+    private $mailgun;
+
+    private $emailInfo;
+
     /**
      * Initializes context.
      *
@@ -20,14 +30,35 @@ class OuntboundContext implements Context, SnippetAcceptingContext
      */
     public function __construct()
     {
+        $this->mailgun = Mockery::spy('Mailgun\Mailgun');
+        $this->mailgunGateway = new MailgunGateway($this->mailgun);
     }
 
     /**
-     * @When I try to send I mail with the following information :
+     * @AfterScenario
      */
-    public function iTryToSendIMailWithTheFollowingInformation(TableNode $table)
+    public function tearDownMockery(AfterScenarioScope $event)
     {
-        throw new PendingException();
+        Mockery::close();
+    }
+
+    /**
+     * @Transform table:from,to,subject,content
+     */
+    public function castEmailFieldsTable(TableNode $emailTable)
+    {
+        $this->emailInfo = $emailTable->getHash()[0];
+        return new Email($this->emailInfo['from'], $this->emailInfo['to'], $this->emailInfo['subject'], $this->emailInfo['content']);
+    }
+
+
+
+    /**
+     * @When I want to send an email with the following information using mailgun gateway:
+     */
+    public function iWantToSendAnEmailWithTheFollowingInformationUsingMailgunGateway(Email $email)
+    {
+        $email->send($this->mailgunGateway);
     }
 
     /**
@@ -35,6 +66,11 @@ class OuntboundContext implements Context, SnippetAcceptingContext
      */
     public function mailgunReceiveAllEmailInformationInOrderToProcessIt()
     {
-        throw new PendingException();
+        $this->mailgun->shouldHaveReceived('sendMessage')->once()->with('test.com', array(
+            'from'    => $this->emailInfo['from'],
+            'to'      => $this->emailInfo['to'],
+            'subject' => $this->emailInfo['subject'],
+            'text'    => $this->emailInfo['content'],
+        ));
     }
 }
