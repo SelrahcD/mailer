@@ -1,0 +1,13 @@
+{
+    "name": "selrahcd/mailer",
+    "require-dev": {
+        "behat/behat": "~3.0",
+        "phpspec/phpspec": "~2.3"
+    },
+    "authors": [
+        {
+            "name": "SelrahcD",
+            "email": "c.desneuf@gmail.com"
+        }
+    ]
+}
