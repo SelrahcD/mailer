@@ -9,5 +9,8 @@
             "name": "SelrahcD",
             "email": "c.desneuf@gmail.com"
         }
-    ]
+    ],
+    "config": {
+      "bin-dir": "bin/"
+    }
 }
