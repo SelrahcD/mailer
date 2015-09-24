@@ -4,9 +4,7 @@ Feature:
 
 
   Scenario: Sending a basic email
-    When I try to send I mail with the following information :
-      | from    | from@test.com                        |
-      | to      | to@test.com                          |
-      | subject | The subject of the test mail         |
-      | content | This a boring content of a test mail |
+    When I want to send an email with the following information:
+      | from         | to         | subject                      | content                      |
+      | from@test.fr | to@test.fr | A subject for the test email | A content for the test email |
     Then mailgun receive all email information in order to process it
