@@ -7,6 +7,7 @@ use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Mockery\Mock;
+use SelrahcD\Mailer\Content;
 use SelrahcD\Mailer\Correspondent;
 use SelrahcD\Mailer\CorrespondentCollection;
 use SelrahcD\Mailer\Email;
@@ -56,7 +57,7 @@ class OuntboundContext implements Context, SnippetAcceptingContext
 
         $to = CorrespondentCollection::createFromString($this->emailInfo['to']);
 
-        return new Email($from, $to, new Subject($this->emailInfo['subject']), $this->emailInfo['content']);
+        return new Email($from, $to, new Subject($this->emailInfo['subject']), new Content($this->emailInfo['content']));
     }
 
 
