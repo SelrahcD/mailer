@@ -12,7 +12,7 @@ class Email
     private $subject;
     private $content;
 
-    public function __construct(Correspondent $from, $to, $subject, $content)
+    public function __construct(Correspondent $from, CorrespondentCollection $to, Subject $subject, Content $content)
     {
         $this->from = $from;
         $this->to = $to;
