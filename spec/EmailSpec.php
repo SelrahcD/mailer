@@ -12,9 +12,16 @@ use SelrahcD\Mailer\Subject;
 
 class EmailSpec extends ObjectBehavior
 {
-    function let(Correspondent $from, CorrespondentCollection $to, Subject $subject, Content $content)
+    function let(
+        Correspondent $from,
+        CorrespondentCollection $to,
+        Subject $subject,
+        Content $content,
+        CorrespondentCollection $secondaryRecipients
+    )
     {
-        $this->beConstructedWith($from, $to, $subject, $content);
+        $to->count()->willReturn(1);
+        $this->beConstructedWith($from, $to, $subject, $content, $secondaryRecipients);
     }
     function it_is_initializable()
     {
@@ -32,14 +39,14 @@ class EmailSpec extends ObjectBehavior
         $mailgun->send($this->getWrappedObject())->shouldHaveBeenCalled();
     }
 
-    function it_should_have_a_from(Correspondent $from)
+    function it_should_have_a_sender(Correspondent $from)
     {
-        $this->getFrom()->shouldReturn($from);
+        $this->getSender()->shouldReturn($from);
     }
 
-    function it_should_have_a_to(CorrespondentCollection $to)
+    function it_should_have_a_primary_recipients(CorrespondentCollection $to)
     {
-        $this->getTo()->shouldReturn($to);
+        $this->getPrimaryRecipients()->shouldReturn($to);
     }
 
     function it_should_have_a_subject(Subject $subject)
@@ -50,5 +57,24 @@ class EmailSpec extends ObjectBehavior
     function it_should_have_a_content(Content $content)
     {
         $this->getContent()->shouldReturn($content);
+    }
+    
+    function it_should_have_secondary_recipients(CorrespondentCollection $secondaryRecipients)
+    {
+        $this->getSecondaryRecipients()->shouldReturn($secondaryRecipients);
+    }
+
+    function it_should_validate_their_is_at_least_one_recipient(
+        Correspondent $from,
+        CorrespondentCollection $to,
+        Subject $subject,
+        Content $content,
+        CorrespondentCollection $secondaryRecipients
+    )
+    {
+        $to->count()->willReturn(0);
+        $secondaryRecipients->count()->willReturn(0);
+        $this->beConstructedWith($from, $to, $subject, $content, $secondaryRecipients);
+        $this->shouldThrow('\DomainException')->duringInstantiation();
     }
 }

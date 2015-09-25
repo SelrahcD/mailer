@@ -6,42 +6,108 @@ use Assert\Assertion;
 
 class Email
 {
-    private $from;
+    /**
+     * @var Correspondent
+     */
+    private $sender;
 
-    private $to;
+    /**
+     * @var CorrespondentCollection
+     */
+    private $primaryRecipients;
+
+    /**
+     * @var Subject
+     */
     private $subject;
+
+    /**
+     * @var Content
+     */
     private $content;
 
-    public function __construct(Correspondent $from, CorrespondentCollection $to, Subject $subject, Content $content)
+    /**
+     * @var CorrespondentCollection
+     */
+    private $secondaryRecipients;
+
+    /**
+     * @param Correspondent $sender
+     * @param CorrespondentCollection $primaryRecipients
+     * @param Subject $subject
+     * @param Content $content
+     * @param CorrespondentCollection $secondaryRecipients
+     */
+    public function __construct(
+        Correspondent $sender,
+        CorrespondentCollection $primaryRecipients,
+        Subject $subject,
+        Content $content,
+        CorrespondentCollection $secondaryRecipients
+    )
     {
-        $this->from = $from;
-        $this->to = $to;
+        $this->guardTheirIsAtLeastOneRecipient($primaryRecipients, $secondaryRecipients);
+
+        $this->sender = $sender;
+        $this->primaryRecipients = $primaryRecipients;
         $this->subject = $subject;
         $this->content = $content;
+        $this->secondaryRecipients = $secondaryRecipients;
     }
 
+    /**
+     * @param MailgunGateway $mailgun
+     */
     public function send(MailgunGateway $mailgun)
     {
         $mailgun->send($this);
     }
 
-    public function getFrom()
+    /**
+     * @return Correspondent
+     */
+    public function getSender()
     {
-        return $this->from;
+        return $this->sender;
     }
 
-    public function getTo()
+    /**
+     * @return CorrespondentCollection
+     */
+    public function getPrimaryRecipients()
     {
-        return $this->to;
+        return $this->primaryRecipients;
     }
 
+    /**
+     * @return Subject
+     */
     public function getSubject()
     {
         return $this->subject;
     }
 
+    /**
+     * @return Content
+     */
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * @return CorrespondentCollection
+     */
+    public function getSecondaryRecipients()
+    {
+        return $this->secondaryRecipients;
+    }
+
+    private function guardTheirIsAtLeastOneRecipient($primaryRecipients, $secondaryRecipients)
+    {
+        if((count($primaryRecipients) + count($secondaryRecipients)) === 0)
+        {
+            throw new \DomainException;
+        }
     }
 }

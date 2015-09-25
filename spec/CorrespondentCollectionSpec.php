@@ -9,6 +9,17 @@ use SelrahcD\Mailer\CorrespondentCollection;
 
 class CorrespondentCollectionSpec extends ObjectBehavior
 {
+    function it_should_be_countable()
+    {
+        $this->shouldImplement('Countable');
+    }
+    
+    function it_should_return_correct_number_of_elements_count(Correspondent $c1, Correspondent $c2)
+    {
+        $this->beConstructedWith(array($c1, $c2));
+        $this->count()->shouldReturn(2);
+    }
+
     function it_should_be_constructed_using_an_array_of_correspondent(Correspondent $c1, Correspondent $c2)
     {
         $this->beConstructedWith(array($c1, $c2));

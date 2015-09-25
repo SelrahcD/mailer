@@ -21,8 +21,8 @@ class MailgunGatewaySpec extends ObjectBehavior
 
     function it_should_send_an_email_to_mailgun(Mailgun $mailgun, Email $email)
     {
-        $email->getFrom()->willReturn("from@test.com");
-        $email->getTo()->willReturn('to@test.com');
+        $email->getSender()->willReturn("from@test.com");
+        $email->getPrimaryRecipients()->willReturn('to@test.com');
         $email->getSubject()->willReturn('A subject');
         $email->getContent()->willReturn('A content');
 

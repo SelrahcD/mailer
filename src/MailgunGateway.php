@@ -21,8 +21,8 @@ class MailgunGateway
     public function send(Email $email)
     {
         $this->mailgun->sendMessage('test.com', array(
-            'from'    => $email->getFrom(),
-            'to'      => $email->getTo(),
+            'from'    => $email->getSender(),
+            'to'      => $email->getPrimaryRecipients(),
             'subject' => $email->getSubject(),
             'text'    => $email->getContent(),
         ));
