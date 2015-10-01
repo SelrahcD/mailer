@@ -7,6 +7,9 @@ use Prophecy\Argument;
 use SelrahcD\Mailer\Correspondent;
 use SelrahcD\Mailer\CorrespondentCollection;
 
+/**
+ * @mixin CorrespondentCollection
+ */
 class CorrespondentCollectionSpec extends ObjectBehavior
 {
     function it_should_be_countable()
@@ -46,5 +49,19 @@ class CorrespondentCollectionSpec extends ObjectBehavior
         $this->beConstructedWith(array($c1, $c2));
 
         $this->__toString()->shouldReturn('bla@test.fr, poney@test.fr');
+    }
+
+    function it_should_allow_to_be_combined_with_another_collection(Correspondent $c1, Correspondent $c2)
+    {
+        $otherCollection = new CorrespondentCollection(array(new Correspondent('paul@ump.fr')));
+        $this->beConstructedWith(array(new Correspondent('nadine@ump.fr')));
+        $this->combineWith($otherCollection)->shouldBeLike(new CorrespondentCollection(array(new Correspondent('nadine@ump.fr'), new Correspondent('paul@ump.fr'))));
+    }
+
+    function it_should_be_equals_if_it_contains_same_correspondent_whatever_the_order()
+    {
+        $this->beConstructedWith(array(new Correspondent('nadine@ump.fr'), new Correspondent('paul@ump.fr')));
+        $this->equals(new CorrespondentCollection(array(new Correspondent('paul@ump.fr'), new Correspondent('nadine@ump.fr'))))->shouldReturn(true);
+        $this->equals(new CorrespondentCollection(array(new Correspondent('paul@ump.fr'), new Correspondent('nadine@ump.fr'), new Correspondent('jef@ump.fr'))))->shouldReturn(false);
     }
 }

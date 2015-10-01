@@ -103,11 +103,23 @@ class Email
         return $this->secondaryRecipients;
     }
 
+    /**
+     * @param $primaryRecipients
+     * @param $secondaryRecipients
+     */
     private function guardTheirIsAtLeastOneRecipient($primaryRecipients, $secondaryRecipients)
     {
         if((count($primaryRecipients) + count($secondaryRecipients)) === 0)
         {
             throw new \DomainException;
         }
+    }
+
+    /**
+     * @return CorrespondentCollection
+     */
+    public function getRecipients()
+    {
+        return $this->secondaryRecipients->combineWith($this->primaryRecipients);
     }
 }

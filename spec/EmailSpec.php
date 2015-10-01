@@ -77,4 +77,16 @@ class EmailSpec extends ObjectBehavior
         $this->beConstructedWith($from, $to, $subject, $content, $secondaryRecipients);
         $this->shouldThrow('\DomainException')->duringInstantiation();
     }
+
+    function it_should_return_all_recipients_at_once(
+         Correspondent $from,
+         Subject $subject,
+         Content $content
+    )
+    {
+        $to = new CorrespondentCollection(array(new Correspondent('paul@ump.fr')));
+        $secondaryRecipients = new CorrespondentCollection(array(new Correspondent('nadine@ump.fr')));
+        $this->beConstructedWith($from, $to, $subject, $content, $secondaryRecipients);
+        $this->getRecipients()->equals($to->combineWith($secondaryRecipients))->shouldReturn(true);
+    }
 }

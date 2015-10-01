@@ -4,7 +4,7 @@ namespace SelrahcD\Mailer;
 
 class CorrespondentCollection implements \Countable
 {
-    private $correspondents;
+    private $correspondents = array();
 
     public function __construct(array $correspondents = array())
     {
@@ -38,5 +38,16 @@ class CorrespondentCollection implements \Countable
     public function count()
     {
         return count($this->correspondents);
+    }
+
+    public function combineWith(CorrespondentCollection $otherCollection)
+    {
+        return new self(array_merge($this->correspondents, $otherCollection->correspondents));
+    }
+
+    public function equals(CorrespondentCollection $otherCollection)
+    {
+        return count($this->correspondents) === count($otherCollection->correspondents)
+            && count(array_diff($this->correspondents, $otherCollection->correspondents)) === 0;
     }
 }
